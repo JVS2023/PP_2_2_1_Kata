@@ -3,8 +3,6 @@ package hiber.service;
 import hiber.dao.UserDao;
 import hiber.model.Car;
 import hiber.model.User;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,13 +11,16 @@ import java.util.List;
 @Service
 public class UserServiceImp implements UserService {
 
-   @Autowired
-   private UserDao userDao;
+   private final UserDao userDao;
+
+   public UserServiceImp(UserDao userDao) {
+      this.userDao = userDao;
+   }
 
    @Transactional
    @Override
-   public void add(User user) {
-      userDao.add(user);
+   public void saveUser(User user) {
+      userDao.saveUser(user);
    }
 
    @Transactional(readOnly = true)
@@ -31,8 +32,6 @@ public class UserServiceImp implements UserService {
    @Transactional
    @Override
    public List<User> getUser(Car car) {
-      Query query = userDao.getSessionFactory().createQuery("from User u where u.car.model = :model and u.car.series = :series");
-      query.setParameter("model", car.getModel()).setParameter("series", car.getSeries());
-      return query.list();
+      return userDao.getUser(car);
    }
 }

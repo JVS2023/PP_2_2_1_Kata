@@ -1,14 +1,16 @@
 package hiber.dao;
 
+import hiber.model.Car;
 import hiber.model.User;
 import org.hibernate.Session;
 
 import java.util.List;
 
 public interface UserDao {
-   void add(User user);
+   void saveUser(User user);
 
    List<User> listUsers();
 
-   Session getSessionFactory();
+   List<User> getUser(Car car);
+
 }
